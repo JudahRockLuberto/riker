@@ -225,22 +225,22 @@ class BeneMassAgeZMaps(object):
             print("# log(M*_gal): {:6.2f}".format(info['logms_map_gal']))
 
         # Get the stellar age map
-        age_ins = self.data['map_star_age_insitu_{}'.format(proj)][idx]
-        age_exs = self.data['map_star_age_exsitu_{}'.format(proj)][idx]
-        age_gal = (age_ins * mass_ins + age_exs * mass_exs) / (mass_ins + mass_exs)
-        age_ins[age_ins == 0.] = np.nan
-        age_exs[age_ins == 0.] = np.nan
+        #age_ins = self.data['map_star_age_insitu_{}'.format(proj)][idx]
+        #age_exs = self.data['map_star_age_exsitu_{}'.format(proj)][idx]
+        #age_gal = (age_ins * mass_ins + age_exs * mass_exs) / (mass_ins + mass_exs)
+        #age_ins[age_ins == 0.] = np.nan
+        #age_exs[age_ins == 0.] = np.nan
 
         if verbose:
             print("\n# (Age_ins/Gyr): {:6.2f}".format(np.nanmedian(age_ins)))
             print("# (Age_exs/Gyr): {:6.2f}".format(np.nanmedian(age_exs)))
 
         # Get the stellar metallicity map
-        met_ins = self.data['map_star_metallicity_insitu_{}'.format(proj)][idx]
-        met_exs = self.data['map_star_metallicity_exsitu_{}'.format(proj)][idx]
-        met_gal = (met_ins * mass_ins + met_exs * mass_exs) / (mass_ins + mass_exs)
-        met_ins[met_ins == 0.] = np.nan
-        met_exs[met_ins == 0.] = np.nan
+        #met_ins = self.data['map_star_metallicity_insitu_{}'.format(proj)][idx]
+        #met_exs = self.data['map_star_metallicity_exsitu_{}'.format(proj)][idx]
+        #met_gal = (met_ins * mass_ins + met_exs * mass_exs) / (mass_ins + mass_exs)
+        #met_ins[met_ins == 0.] = np.nan
+        #met_exs[met_ins == 0.] = np.nan
 
         if verbose:
             print("# log(Z_ins/Z_sun): {:6.2f}".format(

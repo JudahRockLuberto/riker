@@ -169,7 +169,7 @@ class BeneMassAgeZMaps(object):
             'cen_flag': self.data['catgrp_is_primary'][idx],
             #'logms': np.log10(self.data['scalar_star_mass'][idx]),
             'logm200c': np.log10(self.data['catgrp_Group_M_Crit200'][idx]),
-            'age': self.data['scalar_star_age'][idx],
+            #'age': self.data['scalar_star_age'][idx],
             'metallicity': self.data['scalar_star_metallicity'][idx],
             'pix':self.pix
         }

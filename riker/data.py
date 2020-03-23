@@ -248,10 +248,12 @@ class BeneMassAgeZMaps(object):
             print("# log(Z_exs/Z_sun): {:6.2f}".format(
                 np.log10(np.nanmedian(met_exs / Z_SUN))))
 
-        maps = {'mass_ins': mass_ins, 'mass_exs': mass_exs, 'mass_gal': mass_gal,
+        maps = {'mass_ins': mass_ins, 'mass_exs': mass_exs, 'mass_gal': mass_gal}
+                """
                 'age_ins': age_ins, 'age_exs': age_exs, 'age_gal': age_gal,
                 'met_ins': met_ins, 'met_exs': met_exs, 'met_gal': met_gal}
-
+                """
+                
         if maps_only:
             return maps
 

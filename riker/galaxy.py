@@ -93,7 +93,7 @@ class GalaxyMap(object):
         self.config = config.BeneMassAgeZConfig(config_file=config_file)
 
         # Gather all the maps and the basic information
-        #self.info, self.maps = hdf5.get_maps(self.idx, self.proj)
+        self.info, self.maps = hdf5.get_maps(self.idx, self.proj)
 
         # Prefix for output files
         self.prefix = "{}_{}_{}_{}".format(

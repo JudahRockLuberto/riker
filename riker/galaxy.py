@@ -374,59 +374,73 @@ class GalaxyMap(object):
             Subpixel sampling factor. Default is 5.
 
         """
-        # Aperture mass profiles
-        self.maper('gal')
-        if not gal_only:
-            self.maper('ins')
-            self.maper('exs')
-
-        # Aperture age profiles
-        self.aprof('age', 'gal', return_mass=True)
-        if not gal_only:
-            self.aprof('age', 'ins', return_mass=True)
-            self.aprof('age', 'exs', return_mass=True)
-
-        # Aperture metallicity profiles
-        self.aprof('met', 'gal')
-        if not gal_only:
-            self.aprof('met', 'ins')
-            self.aprof('met', 'exs')
-
-        # Gather these results into an Astropy Table
         aper_sum = Table()
+        
+        # add expected values
         aper_sum.add_column(Column(data=self.rad_inn, name='rad_inn'))
         aper_sum.add_column(Column(data=self.rad_out, name='rad_out'))
         aper_sum.add_column(Column(data=self.rad_mid, name='rad_mid'))
 
-        aper_sum.add_column(Column(data=self.maper_gal, name='maper_gal'))
-        if not gal_only:
-            aper_sum.add_column(Column(data=self.maper_ins, name='maper_ins'))
-            aper_sum.add_column(Column(data=self.maper_exs, name='maper_exs'))
+        
+        # aperture mass profiles if there and add to aper_sum table
+        if 'map_star_rho_insitu_{}'.format(self.proj) in hdf5.hdf5_values and 'map_star_rho_exsitu_{}'.format(self.proj) in hdf5.hdf5_values:
+            self.maper('gal')
+            
+            aper_sum.add_column(Column(data=self.maper_gal, name='maper_gal'))
+            
+            if not gal_only:
+                self.maper('ins')
+                self.maper('exs')
+               
+                aper_sum.add_column(Column(data=self.maper_ins, name='maper_ins'))
+                aper_sum.add_column(Column(data=self.maper_exs, name='maper_exs'))
+        else:
+            print('Data for map_star_rho_insitu and map_star_rho_exsitu is not in the file. Skipped.')
 
-        aper_sum.add_column(Column(data=self.age_prof_gal['prof_w'], name='age_gal_w'))
-        aper_sum.add_column(Column(data=self.age_prof_gal['prof'], name='age_gal'))
-        aper_sum.add_column(Column(data=self.age_prof_gal['flag'], name='age_gal_flag'))
-        aper_sum.add_column(Column(data=self.age_prof_gal['mass'], name='mprof_gal'))
-        if not gal_only:
-            aper_sum.add_column(Column(data=self.age_prof_ins['prof_w'], name='age_ins_w'))
-            aper_sum.add_column(Column(data=self.age_prof_ins['prof'], name='age_ins'))
-            aper_sum.add_column(Column(data=self.age_prof_ins['flag'], name='age_ins_flag'))
-            aper_sum.add_column(Column(data=self.age_prof_ins['mass'], name='mprof_ins'))
-            aper_sum.add_column(Column(data=self.age_prof_exs['prof_w'], name='age_exs_w'))
-            aper_sum.add_column(Column(data=self.age_prof_exs['prof'], name='age_exs'))
-            aper_sum.add_column(Column(data=self.age_prof_exs['flag'], name='age_exs_flag'))
-            aper_sum.add_column(Column(data=self.age_prof_exs['mass'], name='mprof_exs'))
-        aper_sum.add_column(Column(data=self.met_prof_gal['prof_w'], name='met_gal_w'))
-        aper_sum.add_column(Column(data=self.met_prof_gal['prof'], name='met_gal'))
-        aper_sum.add_column(Column(data=self.met_prof_gal['flag'], name='met_gal_flag'))
+        # aperture age profiles if there and add to aper_sum table
+        if 'map_star_age_insitu_{}'.format(self.proj) in hdf5.hdf5_values and 'map_star_age_exsitu_{}'.format(self.proj) in hdf5.hdf5_values:
+            self.aprof('age', 'gal', return_mass=True)
+            
+            aper_sum.add_column(Column(data=self.age_prof_gal['prof_w'], name='age_gal_w'))
+            aper_sum.add_column(Column(data=self.age_prof_gal['prof'], name='age_gal'))
+            aper_sum.add_column(Column(data=self.age_prof_gal['flag'], name='age_gal_flag'))
+            aper_sum.add_column(Column(data=self.age_prof_gal['mass'], name='mprof_gal'))
+            
+            if not gal_only:
+                self.aprof('age', 'ins', return_mass=True)
+                self.aprof('age', 'exs', return_mass=True)
 
-        if not gal_only:
-            aper_sum.add_column(Column(data=self.met_prof_ins['prof_w'], name='met_ins_w'))
-            aper_sum.add_column(Column(data=self.met_prof_ins['prof'], name='met_ins'))
-            aper_sum.add_column(Column(data=self.met_prof_ins['flag'], name='met_ins_flag'))
-            aper_sum.add_column(Column(data=self.met_prof_exs['prof_w'], name='met_exs_w'))
-            aper_sum.add_column(Column(data=self.met_prof_exs['prof'], name='met_exs'))
-            aper_sum.add_column(Column(data=self.met_prof_exs['flag'], name='met_exs_flag'))
+                aper_sum.add_column(Column(data=self.age_prof_ins['prof_w'], name='age_ins_w'))
+                aper_sum.add_column(Column(data=self.age_prof_ins['prof'], name='age_ins'))
+                aper_sum.add_column(Column(data=self.age_prof_ins['flag'], name='age_ins_flag'))
+                aper_sum.add_column(Column(data=self.age_prof_ins['mass'], name='mprof_ins'))
+                aper_sum.add_column(Column(data=self.age_prof_exs['prof_w'], name='age_exs_w'))
+                aper_sum.add_column(Column(data=self.age_prof_exs['prof'], name='age_exs'))
+                aper_sum.add_column(Column(data=self.age_prof_exs['flag'], name='age_exs_flag'))
+                aper_sum.add_column(Column(data=self.age_prof_exs['mass'], name='mprof_exs'))
+        else:
+            print('map_star_age_insitu and map_star_age_insitu were not in file. Skipped.')
+
+        # Aperture metallicity profiles if there and add to aper_sum table
+        if 'map_star_metallicity_insitu_{}'.format(self.proj) in hdf5.hdf5_values and 'map_star_metallicity_exsitu_{}'.format(self.proj) in hdf5.hdf5_values:
+            self.aprof('met', 'gal')
+            
+            aper_sum.add_column(Column(data=self.met_prof_gal['prof_w'], name='met_gal_w'))
+            aper_sum.add_column(Column(data=self.met_prof_gal['prof'], name='met_gal'))
+            aper_sum.add_column(Column(data=self.met_prof_gal['flag'], name='met_gal_flag'))
+            
+            if not gal_only:
+                self.aprof('met', 'ins')
+                self.aprof('met', 'exs')
+                
+                aper_sum.add_column(Column(data=self.met_prof_ins['prof_w'], name='met_ins_w'))
+                aper_sum.add_column(Column(data=self.met_prof_ins['prof'], name='met_ins'))
+                aper_sum.add_column(Column(data=self.met_prof_ins['flag'], name='met_ins_flag'))
+                aper_sum.add_column(Column(data=self.met_prof_exs['prof_w'], name='met_exs_w'))
+                aper_sum.add_column(Column(data=self.met_prof_exs['prof'], name='met_exs'))
+                aper_sum.add_column(Column(data=self.met_prof_exs['flag'], name='met_exs_flag'))
+        else:
+            print('map_star_metallicity_insitu and map_star_metallicity_exsitu were not in file. Skipped.')
 
         setattr(self, 'aper_sum', aper_sum.as_array())
 
@@ -544,8 +558,7 @@ class GalaxyMap(object):
 
         # Sometimes Ellipse failed all the way...make sure it is dealt gracefully
         if ell_shape is None:
-            print("# Ellipse fails to get shape for {} of {}".format(
-                map_type, self.info['catsh_id']))
+            print("# Ellipse fails to get shape for {} of {}".format(map_type, self.info['catsh_id']))
         else:
             # Calculate the Fourier amplitude information
             fourier_shape = profile.fourier_profile(ell_shape, pix=self.info['pix'])
